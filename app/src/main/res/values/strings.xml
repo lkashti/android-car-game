@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CarGame</string>
+    <string name="initial_score">0</string>
+</resources>
