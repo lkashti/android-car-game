@@ -2,13 +2,18 @@ package com.example.cargame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -60,8 +65,10 @@ public class MainActivity extends AppCompatActivity {
     protected int score, livesLeft;
     protected int currentCarPos = CENTER_LANE;
     protected ArrayList<FrameLayout> blocks;
-    protected Timer timer;
+    protected ArrayList<ImageView> hearts;
+    protected Timer b1Timer, b2Timer;
     protected int firstBlockPos, secondBlockPos;
+    Vibrator v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,9 +86,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startGame() {
+        if (b1Timer!=null && b2Timer!=null) {
+            b1Timer.cancel();
+            b2Timer.cancel();
+        }
         start_button.setVisibility(View.INVISIBLE);
 
-        livesLeft = 0;
+        livesLeft = 3;
         left_heart.setVisibility(View.VISIBLE);
         center_heart.setVisibility(View.VISIBLE);
         right_heart.setVisibility(View.VISIBLE);
@@ -90,36 +101,90 @@ public class MainActivity extends AppCompatActivity {
         scoreView.setText(String.valueOf(score));
         scoreView.setVisibility(View.VISIBLE);
 
-        timer = new Timer();
-
         moveBlocks();
     }
 
     private void moveBlocks() {
-        moveBlock(firstBlockPos);
-        moveBlock(secondBlockPos);
+        moveFirstBlock();
+        moveSecondBlock();
     }
 
-    private void moveBlock(int blockPos) {
-        TimerTask moveBlockTimer = new TimerTask() {
+    private void moveFirstBlock() {
+        b1Timer = new Timer();
+        b1Timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.i("INFO","TASK");
-                        updateBlockUI(blockPos);
+                        updateFirstBlockPosition();
                     }
                 });
             }
-        };
-        timer.scheduleAtFixedRate(moveBlockTimer,0,BLOCK_MOVEMENT_RATE_MILLIS);
+        }, 0, BLOCK_MOVEMENT_RATE_MILLIS);
     }
 
-    private void updateBlockUI(int blockPos) {
-        blocks.get(blockPos).setVisibility(View.INVISIBLE);
-        blockPos += NUM_COLS;
-        blocks.get(blockPos).setVisibility(View.VISIBLE);
+    private void moveSecondBlock() {
+        b2Timer = new Timer();
+        b2Timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateSecondBlockPosition();
+                    }
+                });
+            }
+        }, 0, BLOCK_MOVEMENT_RATE_MILLIS);
+    }
+
+    private void updateFirstBlockPosition() {
+        int nextBlockPosition= firstBlockPos + NUM_COLS;
+        int boardLimit = NUM_COLS * NUM_ROWS - 1;
+        if (nextBlockPosition==currentCarPos){ //collision
+            Toast.makeText(this, "Crash!",
+                    Toast.LENGTH_SHORT).show();
+            vibrate();
+            livesLeft--;
+            hearts.get(livesLeft).setVisibility(View.INVISIBLE);
+            if (livesLeft==0) {
+                startGame();
+            }
+            Log.i("INFO","livesLeft = "+livesLeft);
+        }
+        blocks.get(firstBlockPos).setVisibility(View.INVISIBLE);
+        if (nextBlockPosition > boardLimit) {
+            scoreView.setText(String.valueOf(++score));
+            firstBlockPos = new Random().nextInt(NUM_COLS*2);
+        } else {
+            firstBlockPos += NUM_COLS;
+        }
+        blocks.get(firstBlockPos).setVisibility(View.VISIBLE);
+    }
+
+    private void updateSecondBlockPosition() {
+        int nextBlockPosition= secondBlockPos + NUM_COLS;
+        int boardLimit = NUM_COLS * NUM_ROWS - 1;
+        if (nextBlockPosition==currentCarPos){ //collision
+            Toast.makeText(this, "Crash!",
+                    Toast.LENGTH_SHORT).show();
+            vibrate();
+            livesLeft--;
+            hearts.get(livesLeft).setVisibility(View.INVISIBLE);
+            if (livesLeft==0) {
+                startGame();
+            }
+            Log.i("INFO","livesLeft = "+livesLeft);
+        }
+        blocks.get(secondBlockPos).setVisibility(View.INVISIBLE);
+        if (nextBlockPosition > boardLimit) {
+            scoreView.setText(String.valueOf(++score));
+            secondBlockPos = new Random().nextInt(NUM_COLS*2);
+        } else {
+            secondBlockPos += NUM_COLS;
+        }
+        blocks.get(secondBlockPos).setVisibility(View.VISIBLE);
     }
 
     private void moveRight() {
@@ -147,15 +212,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void initGameViews() {
-        initHearts();
-        initScore();
-        initBlocks();
-        initCars();
-        initControls();
-    }
-
     private void prepareGameLogic() {
+        populateHeartsArray();
         populateBlocksArray();
         for (FrameLayout block : blocks) {
             block.setVisibility(View.INVISIBLE);
@@ -175,6 +233,24 @@ public class MainActivity extends AppCompatActivity {
         center_car.setVisibility(View.VISIBLE);
         left_car.setVisibility(View.INVISIBLE);
         right_car.setVisibility(View.INVISIBLE);
+    }
+    public void vibrate() {
+        v = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(200);
+        }
+    }
+
+
+    private void initGameViews() {
+        initHearts();
+        initScore();
+        initBlocks();
+        initCars();
+        initControls();
     }
 
     private void initHearts() {
@@ -240,5 +316,13 @@ public class MainActivity extends AppCompatActivity {
         blocks.add(fifth_left);
         blocks.add(fifth_center);
         blocks.add(fifth_right);
+    }
+
+    private void populateHeartsArray() {
+        hearts = new ArrayList<>();
+        //order of addition reversed to string in order to pop last heart on screen;
+        hearts.add(right_heart);
+        hearts.add(center_heart);
+        hearts.add(left_heart);
     }
 }
