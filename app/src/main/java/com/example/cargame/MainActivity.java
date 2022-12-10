@@ -214,24 +214,40 @@ public class MainActivity extends AppCompatActivity {
     private void moveRight() {
         if (currentCarPos == LEFT_LANE) {
             left_car.setVisibility(View.INVISIBLE);
+            left_mid_car.setVisibility(View.VISIBLE);
+            currentCarPos = LEFT_MID_LANE;
+        } else if (currentCarPos == LEFT_MID_LANE) {
+            left_mid_car.setVisibility(View.INVISIBLE);
             center_car.setVisibility(View.VISIBLE);
             currentCarPos = CENTER_LANE;
         } else if (currentCarPos == CENTER_LANE) {
             center_car.setVisibility(View.INVISIBLE);
+            right_mid_car.setVisibility(View.VISIBLE);
+            currentCarPos = RIGHT_MID_LANE;
+        } else if (currentCarPos == RIGHT_MID_LANE) {
+            right_mid_car.setVisibility(View.INVISIBLE);
             right_car.setVisibility(View.VISIBLE);
             currentCarPos = RIGHT_LANE;
         }
     }
 
     private void moveLeft() {
-        if (currentCarPos == CENTER_LANE) {
-            center_car.setVisibility(View.INVISIBLE);
-            left_car.setVisibility(View.VISIBLE);
-            currentCarPos = LEFT_LANE;
-        } else if (currentCarPos == RIGHT_LANE) {
+        if (currentCarPos == RIGHT_LANE) {
             right_car.setVisibility(View.INVISIBLE);
+            right_mid_car.setVisibility(View.VISIBLE);
+            currentCarPos = RIGHT_MID_LANE;
+        } else if (currentCarPos == RIGHT_MID_LANE) {
+            right_mid_car.setVisibility(View.INVISIBLE);
             center_car.setVisibility(View.VISIBLE);
             currentCarPos = CENTER_LANE;
+        } else if (currentCarPos == CENTER_LANE) {
+            center_car.setVisibility(View.INVISIBLE);
+            left_mid_car.setVisibility(View.VISIBLE);
+            currentCarPos = LEFT_MID_LANE;
+        } else if (currentCarPos == LEFT_MID_LANE) {
+            left_mid_car.setVisibility(View.INVISIBLE);
+            left_car.setVisibility(View.VISIBLE);
+            currentCarPos = LEFT_LANE;
         }
     }
 
@@ -294,43 +310,43 @@ public class MainActivity extends AppCompatActivity {
     private void initBlocks() {
         //init views
         first_left = (FrameLayout) findViewById(R.id.row_1_col_1_block);
-        first_mid_left=(FrameLayout) findViewById(R.id.row_1_col_2_block);
+        first_mid_left = (FrameLayout) findViewById(R.id.row_1_col_2_block);
         first_center = (FrameLayout) findViewById(R.id.row_1_col_3_block);
         first_mid_right = (FrameLayout) findViewById(R.id.row_1_col_4_block);
         first_right = (FrameLayout) findViewById(R.id.row_1_col_5_block);
 
         second_left = (FrameLayout) findViewById(R.id.row_2_col_1_block);
-        second_mid_left=(FrameLayout) findViewById(R.id.row_2_col_2_block);
+        second_mid_left = (FrameLayout) findViewById(R.id.row_2_col_2_block);
         second_center = (FrameLayout) findViewById(R.id.row_2_col_3_block);
         second_mid_right = (FrameLayout) findViewById(R.id.row_2_col_4_block);
         second_right = (FrameLayout) findViewById(R.id.row_2_col_5_block);
 
         third_left = (FrameLayout) findViewById(R.id.row_3_col_1_block);
-        third_mid_left=(FrameLayout) findViewById(R.id.row_3_col_2_block);
+        third_mid_left = (FrameLayout) findViewById(R.id.row_3_col_2_block);
         third_center = (FrameLayout) findViewById(R.id.row_3_col_3_block);
         third_mid_right = (FrameLayout) findViewById(R.id.row_3_col_4_block);
         third_right = (FrameLayout) findViewById(R.id.row_3_col_5_block);
 
         fourth_left = (FrameLayout) findViewById(R.id.row_4_col_1_block);
-        fourth_mid_left=(FrameLayout) findViewById(R.id.row_4_col_2_block);
+        fourth_mid_left = (FrameLayout) findViewById(R.id.row_4_col_2_block);
         fourth_center = (FrameLayout) findViewById(R.id.row_4_col_3_block);
         fourth_mid_right = (FrameLayout) findViewById(R.id.row_4_col_4_block);
         fourth_right = (FrameLayout) findViewById(R.id.row_4_col_5_block);
 
         fifth_left = (FrameLayout) findViewById(R.id.row_5_col_1_block);
-        fifth_mid_left=(FrameLayout) findViewById(R.id.row_5_col_2_block);
+        fifth_mid_left = (FrameLayout) findViewById(R.id.row_5_col_2_block);
         fifth_center = (FrameLayout) findViewById(R.id.row_5_col_3_block);
         fifth_mid_right = (FrameLayout) findViewById(R.id.row_5_col_4_block);
         fifth_right = (FrameLayout) findViewById(R.id.row_5_col_5_block);
 
         sixth_left = (FrameLayout) findViewById(R.id.row_6_col_1_block);
-        sixth_mid_left=(FrameLayout) findViewById(R.id.row_6_col_2_block);
+        sixth_mid_left = (FrameLayout) findViewById(R.id.row_6_col_2_block);
         sixth_center = (FrameLayout) findViewById(R.id.row_6_col_3_block);
         sixth_mid_right = (FrameLayout) findViewById(R.id.row_6_col_4_block);
         sixth_right = (FrameLayout) findViewById(R.id.row_6_col_5_block);
 
         seventh_left = (FrameLayout) findViewById(R.id.row_7_col_1_block);
-        seventh_mid_left=(FrameLayout) findViewById(R.id.row_7_col_2_block);
+        seventh_mid_left = (FrameLayout) findViewById(R.id.row_7_col_2_block);
         seventh_center = (FrameLayout) findViewById(R.id.row_7_col_3_block);
         seventh_mid_right = (FrameLayout) findViewById(R.id.row_7_col_4_block);
         seventh_right = (FrameLayout) findViewById(R.id.row_7_col_5_block);
