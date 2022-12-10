@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">CarGame</string>
     <string name="initial_score">0</string>
+    <string name="heart_img">Heart</string>
+    <string name="car_img">Car</string>
+    <string name="start_btn_img">Start</string>
+    <string name="block_img">Block</string>
+    <string name="left_btn_img">Left</string>
+    <string name="right_btn_img">Right</string>
 </resources>

@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@drawable/road"
+    android:weightSum="3"
     tools:context=".MainActivity">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="3">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="180sp"
             android:layout_weight="1"
-            android:weightSum="2">
+            android:weightSum="2"
+            android:baselineAligned="false">
 
 
             <LinearLayout
@@ -25,7 +22,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="NestedWeights">
 
                 <TextView
                     android:id="@+id/score"
@@ -51,6 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/heart_img"
                     android:src="@drawable/heart" />
 
                 <ImageView
@@ -58,6 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/heart_img"
                     android:src="@drawable/heart" />
 
                 <ImageView
@@ -65,6 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/heart_img"
                     android:src="@drawable/heart" />
             </LinearLayout>
 
@@ -82,7 +83,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:weightSum="3">
+                android:weightSum="3"
+                android:baselineAligned="false"
+                tools:ignore="NestedWeights">
 
                 <FrameLayout
                     android:id="@+id/row_1_col_1_block"
@@ -94,6 +97,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
 
@@ -107,6 +111,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
 
@@ -120,6 +125,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
             </LinearLayout>
@@ -128,7 +134,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:weightSum="3">
+                android:weightSum="3"
+                android:baselineAligned="false">
 
                 <FrameLayout
                     android:id="@+id/row_2_col_1_block"
@@ -140,6 +147,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
 
@@ -153,6 +161,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
 
@@ -166,6 +175,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
             </LinearLayout>
@@ -174,7 +184,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:weightSum="3">
+                android:weightSum="3"
+                android:baselineAligned="false">
 
                 <FrameLayout
                     android:id="@+id/row_3_col_1_block"
@@ -186,6 +197,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
 
@@ -199,6 +211,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
 
@@ -212,6 +225,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
             </LinearLayout>
@@ -220,7 +234,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:weightSum="3">
+                android:weightSum="3"
+                android:baselineAligned="false">
 
                 <FrameLayout
                     android:id="@+id/row_4_col_1_block"
@@ -232,6 +247,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
 
@@ -245,6 +261,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
 
@@ -258,6 +275,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
             </LinearLayout>
@@ -266,7 +284,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:weightSum="3">
+                android:weightSum="3"
+                android:baselineAligned="false">
 
                 <FrameLayout
                     android:id="@+id/row_5_col_1_block"
@@ -278,6 +297,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
 
@@ -291,6 +311,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
 
@@ -304,6 +325,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="15sp"
+                        android:contentDescription="@string/block_img"
                         android:src="@drawable/block" />
                 </FrameLayout>
             </LinearLayout>
@@ -312,7 +334,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:weightSum="3">
+                android:weightSum="3"
+                android:baselineAligned="false">
 
                 <FrameLayout
                     android:id="@+id/left_car"
@@ -323,6 +346,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:contentDescription="@string/car_img"
                         android:src="@drawable/car" />
                 </FrameLayout>
 
@@ -335,6 +359,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:contentDescription="@string/car_img"
                         android:src="@drawable/car" />
                 </FrameLayout>
 
@@ -347,6 +372,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:contentDescription="@string/car_img"
                         android:src="@drawable/car" />
                 </FrameLayout>
             </LinearLayout>
@@ -365,8 +391,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="20sp"
                 android:layout_marginVertical="10sp"
+                android:contentDescription="@string/left_btn_img"
                 android:layout_weight="1"
-                android:background="@drawable/left_arrow" />
+                android:background="@drawable/left_arrow"
+                tools:ignore="NestedWeights" />
 
             <ImageButton
                 android:id="@+id/start_button"
@@ -374,6 +402,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20sp"
                 android:layout_marginVertical="10sp"
+                android:contentDescription="@string/start_btn_img"
                 android:layout_weight="1"
                 android:background="@drawable/start" />
 
@@ -383,9 +412,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="20sp"
                 android:layout_marginVertical="10sp"
+                android:contentDescription="@string/right_btn_img"
                 android:layout_weight="1"
                 android:background="@drawable/right_arrow" />
         </LinearLayout>
 
-    </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
