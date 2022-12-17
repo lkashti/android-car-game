@@ -90,8 +90,9 @@ public class MainActivity extends AppCompatActivity {
     protected int currentCarPos = CENTER_LANE;
     protected ArrayList<FrameLayout> blocks;
     protected ArrayList<ImageView> hearts;
+    protected boolean[] occupiedLanes;
     protected Timer b1Timer, b2Timer, b3Timer, b4Timer;
-    protected int firstBlockPos, secondBlockPos;
+    protected int firstBlockPos, secondBlockPos, thirdBlockPos, fourthBlockPos;
     Vibrator v;
 
     @Override
@@ -110,9 +111,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startGame() {
-        if (b1Timer != null && b2Timer != null) {
+        if (b1Timer != null && b2Timer != null && b3Timer != null) {
             b1Timer.cancel();
             b2Timer.cancel();
+            b3Timer.cancel();
         }
         start_button.setVisibility(View.INVISIBLE);
 
@@ -131,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
     private void moveBlocks() {
         moveFirstBlock();
         moveSecondBlock();
+        moveThirdBlock();
+        moveFourthBlock();
     }
 
     private void moveFirstBlock() {
@@ -163,7 +167,39 @@ public class MainActivity extends AppCompatActivity {
         }, 0, BLOCK_MOVEMENT_RATE_MILLIS);
     }
 
+    private void moveThirdBlock() {
+        b3Timer = new Timer();
+        b3Timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateThirdBlockPosition();
+                    }
+                });
+            }
+        }, 0, BLOCK_MOVEMENT_RATE_MILLIS);
+    }
+
+    private void moveFourthBlock() {
+        b4Timer = new Timer();
+        b4Timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateFourthBlockPosition();
+                    }
+                });
+            }
+        }, 0, BLOCK_MOVEMENT_RATE_MILLIS);
+    }
+
+
     private void updateFirstBlockPosition() {
+        int currentBlockLane = firstBlockPos % NUM_COLS;
         int nextBlockPosition = firstBlockPos + NUM_COLS;
         int boardLimit = NUM_COLS * NUM_ROWS - 1;
         if (nextBlockPosition == currentCarPos) { //collision
@@ -180,7 +216,11 @@ public class MainActivity extends AppCompatActivity {
         blocks.get(firstBlockPos).setVisibility(View.INVISIBLE);
         if (nextBlockPosition > boardLimit) {
             scoreView.setText(String.valueOf(++score));
-            firstBlockPos = new Random().nextInt(NUM_COLS * 2);
+            do {
+                firstBlockPos = new Random().nextInt(NUM_COLS * 2);
+            } while (occupiedLanes[firstBlockPos % NUM_COLS]);
+            occupiedLanes[currentBlockLane] = false;
+            occupiedLanes[firstBlockPos % NUM_COLS] = true;
         } else {
             firstBlockPos += NUM_COLS;
         }
@@ -188,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateSecondBlockPosition() {
+        int currentBlockLane = secondBlockPos % NUM_COLS;
         int nextBlockPosition = secondBlockPos + NUM_COLS;
         int boardLimit = NUM_COLS * NUM_ROWS - 1;
         if (nextBlockPosition == currentCarPos) { //collision
@@ -204,12 +245,75 @@ public class MainActivity extends AppCompatActivity {
         blocks.get(secondBlockPos).setVisibility(View.INVISIBLE);
         if (nextBlockPosition > boardLimit) {
             scoreView.setText(String.valueOf(++score));
-            secondBlockPos = new Random().nextInt(NUM_COLS * 2);
+            do {
+                secondBlockPos = new Random().nextInt(NUM_COLS * 2);
+            } while (occupiedLanes[secondBlockPos % NUM_COLS]);
+            occupiedLanes[currentBlockLane] = false;
+            occupiedLanes[secondBlockPos % NUM_COLS] = true;
         } else {
             secondBlockPos += NUM_COLS;
         }
         blocks.get(secondBlockPos).setVisibility(View.VISIBLE);
     }
+
+    private void updateThirdBlockPosition() {
+        int currentBlockLane = thirdBlockPos % NUM_COLS;
+        int nextBlockPosition = thirdBlockPos + NUM_COLS;
+        int boardLimit = NUM_COLS * NUM_ROWS - 1;
+        if (nextBlockPosition == currentCarPos) { //collision
+            Toast.makeText(this, "Crash!",
+                    Toast.LENGTH_SHORT).show();
+            vibrate();
+            livesLeft--;
+            hearts.get(livesLeft).setVisibility(View.INVISIBLE);
+            if (livesLeft == 0) {
+                startGame();
+            }
+            Log.i("INFO", "livesLeft = " + livesLeft);
+        }
+        blocks.get(thirdBlockPos).setVisibility(View.INVISIBLE);
+        if (nextBlockPosition > boardLimit) {
+            scoreView.setText(String.valueOf(++score));
+            do {
+                thirdBlockPos = new Random().nextInt(NUM_COLS * 2);
+            } while (occupiedLanes[thirdBlockPos % NUM_COLS]);
+            occupiedLanes[currentBlockLane] = false;
+            occupiedLanes[thirdBlockPos % NUM_COLS] = true;
+        } else {
+            thirdBlockPos += NUM_COLS;
+        }
+        blocks.get(thirdBlockPos).setVisibility(View.VISIBLE);
+    }
+
+    private void updateFourthBlockPosition() {
+        int currentBlockLane = fourthBlockPos % NUM_COLS;
+        int nextBlockPosition = fourthBlockPos + NUM_COLS;
+        int boardLimit = NUM_COLS * NUM_ROWS - 1;
+        if (nextBlockPosition == currentCarPos) { //collision
+            Toast.makeText(this, "Crash!",
+                    Toast.LENGTH_SHORT).show();
+            vibrate();
+            livesLeft--;
+            hearts.get(livesLeft).setVisibility(View.INVISIBLE);
+            if (livesLeft == 0) {
+                startGame();
+            }
+            Log.i("INFO", "livesLeft = " + livesLeft);
+        }
+        blocks.get(fourthBlockPos).setVisibility(View.INVISIBLE);
+        if (nextBlockPosition > boardLimit) {
+            scoreView.setText(String.valueOf(++score));
+            do {
+                fourthBlockPos = new Random().nextInt(NUM_COLS * 2);
+            } while (occupiedLanes[fourthBlockPos % NUM_COLS]);
+            occupiedLanes[currentBlockLane] = false;
+            occupiedLanes[fourthBlockPos % NUM_COLS] = true;
+        } else {
+            fourthBlockPos += NUM_COLS;
+        }
+        blocks.get(fourthBlockPos).setVisibility(View.VISIBLE);
+    }
+
 
     private void moveRight() {
         if (currentCarPos == LEFT_LANE) {
@@ -255,15 +359,28 @@ public class MainActivity extends AppCompatActivity {
     private void prepareGameLogic() {
         populateHeartsArray();
         populateBlocksArray();
+        occupiedLanes = new boolean[5];
         for (FrameLayout block : blocks) {
             block.setVisibility(View.INVISIBLE);
         }
 
         Random r = new Random();
         firstBlockPos = r.nextInt(NUM_COLS);
-        while (firstBlockPos == secondBlockPos) secondBlockPos = r.nextInt(NUM_COLS * 2);
+        occupiedLanes[firstBlockPos] = true;
+
+        while (occupiedLanes[secondBlockPos % NUM_COLS])
+            secondBlockPos = r.nextInt(NUM_COLS * 2);
+        occupiedLanes[secondBlockPos % NUM_COLS] = true;
+        while (occupiedLanes[thirdBlockPos % NUM_COLS])
+            thirdBlockPos = r.nextInt(NUM_COLS * 2);
+        occupiedLanes[thirdBlockPos % NUM_COLS] = true;
+        while (occupiedLanes[fourthBlockPos % NUM_COLS])
+            fourthBlockPos = r.nextInt(NUM_COLS * 2);
+        occupiedLanes[fourthBlockPos % NUM_COLS] = true;
         blocks.get(firstBlockPos).setVisibility(View.VISIBLE);
         blocks.get(secondBlockPos).setVisibility(View.VISIBLE);
+        blocks.get(thirdBlockPos).setVisibility(View.VISIBLE);
+        blocks.get(fourthBlockPos).setVisibility(View.VISIBLE);
 
         left_heart.setVisibility(View.INVISIBLE);
         center_heart.setVisibility(View.INVISIBLE);
