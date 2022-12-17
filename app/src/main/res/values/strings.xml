@@ -7,4 +7,9 @@
     <string name="block_img">Block</string>
     <string name="left_btn_img">Left</string>
     <string name="right_btn_img">Right</string>
+    <string name="choose_mode">Choose Mode:</string>
+    <string name="start_btn_text">Start Game</string>
+    <string name="sensors">Sensors</string>
+    <string name="buttons_fast">2 Buttons - Fast</string>
+    <string name="buttons_slow">2 Buttons - Slow</string>
 </resources>

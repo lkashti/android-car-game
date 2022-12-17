@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MenuActivity">
+
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.05"
+        android:text="@string/app_name"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="80sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/choose_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/choose_mode"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4">
+
+
+        <RadioButton
+            android:id="@+id/buttons_slow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="130sp"
+            android:gravity="center"
+            android:text="@string/buttons_slow" />
+
+        <RadioButton
+            android:id="@+id/buttons_fast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="130sp"
+            android:gravity="center"
+            android:text="@string/buttons_fast" />
+
+        <RadioButton
+            android:id="@+id/sensors"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="130sp"
+            android:gravity="center"
+            android:text="@string/sensors" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8sp"
+        android:backgroundTint="@color/material_dynamic_neutral20"
+        android:text="@string/start_btn_text" />
+
+</LinearLayout>
