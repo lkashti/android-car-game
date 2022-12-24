@@ -2,7 +2,7 @@ package com.example.cargame;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.media.Image;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -14,6 +14,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -25,13 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
     static final int NUM_ROWS = 7;
     static final int NUM_COLS = 5;
-    static final int BLOCK_MOVEMENT_RATE_MILLIS = 400;
     static final int LEFT_LANE = 35;
     static final int LEFT_MID_LANE = 36;
     static final int CENTER_LANE = 37;
     static final int RIGHT_MID_LANE = 38;
     static final int RIGHT_LANE = 39;
-
+    static int BLOCK_MOVEMENT_RATE_MILLIS = 400;
     //hearts
     protected ImageView left_heart;
     protected ImageView center_heart;
@@ -93,7 +96,11 @@ public class MainActivity extends AppCompatActivity {
     protected boolean[] occupiedLanes;
     protected Timer b1Timer, b2Timer, b3Timer, b4Timer;
     protected int firstBlockPos, secondBlockPos, thirdBlockPos, fourthBlockPos;
-    Vibrator v;
+    private boolean tilt;
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private SensorEventListener accSensorEventListener;
+    private Vibrator v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,16 +112,33 @@ public class MainActivity extends AppCompatActivity {
         initGameViews();
         prepareGameLogic();
 
+        if (tilt) {
+            sensorManager.registerListener(accSensorEventListener, sensor, sensorManager.SENSOR_DELAY_NORMAL);
+        } else {
+            left_button.setOnClickListener(v -> moveLeft());
+            right_button.setOnClickListener(v -> moveRight());
+        }
         start_button.setOnClickListener(v -> startGame());
-        left_button.setOnClickListener(v -> moveLeft());
-        right_button.setOnClickListener(v -> moveRight());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
     }
 
     private void startGame() {
-        if (b1Timer != null && b2Timer != null && b3Timer != null) {
+        if (b1Timer != null && b2Timer != null && b3Timer != null && b4Timer != null) {
             b1Timer.cancel();
             b2Timer.cancel();
             b3Timer.cancel();
+            b4Timer.cancel();
         }
         start_button.setVisibility(View.INVISIBLE);
 
@@ -357,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void prepareGameLogic() {
+        setGameMode();
         populateHeartsArray();
         populateBlocksArray();
         occupiedLanes = new boolean[5];
@@ -395,16 +420,27 @@ public class MainActivity extends AppCompatActivity {
         right_mid_car.setVisibility(View.INVISIBLE);
     }
 
-    public void vibrate() {
-        v = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
-        } else {
-            //deprecated in API 26
-            v.vibrate(200);
+    private void setGameMode() {
+        int game_mode = getIntent().getExtras().getInt("game_mode");
+        if (game_mode == R.id.buttons_fast) BLOCK_MOVEMENT_RATE_MILLIS = 250;
+        else if (game_mode == R.id.sensors) {
+            initSensor();
+            tilt = true;
+            left_button.setVisibility(View.INVISIBLE);
+            right_button.setVisibility(View.INVISIBLE);
         }
+
     }
 
+    private void vibrate() {
+        v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(100);
+        }
+    }
 
     private void initGameViews() {
         initHearts();
@@ -412,6 +448,24 @@ public class MainActivity extends AppCompatActivity {
         initBlocks();
         initCars();
         initControls();
+    }
+
+    private void initSensor() {
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        accSensorEventListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                float xValue = sensorEvent.values[0];
+                if (xValue > 2.1 && xValue < 5) moveLeft();
+                if (xValue < -2.1 && xValue > -5) moveRight();
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {
+
+            }
+        };
     }
 
     private void initHearts() {

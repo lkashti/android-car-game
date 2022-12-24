@@ -13,7 +13,6 @@
         android:layout_gravity="center"
         android:layout_weight="0.05"
         android:text="@string/app_name"
-        android:textColor="@color/cardview_dark_background"
         android:textSize="80sp"
         android:textStyle="italic" />
 
@@ -27,6 +26,7 @@
         android:textStyle="bold" />
 
     <RadioGroup
+        android:id="@+id/options_radio_group"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.4">
@@ -58,11 +58,10 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/menu_start_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8sp"
-        android:backgroundTint="@color/material_dynamic_neutral20"
         android:text="@string/start_btn_text" />
 
 </LinearLayout>
