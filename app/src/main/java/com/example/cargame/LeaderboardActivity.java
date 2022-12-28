@@ -17,7 +17,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     private Button leaderboard_home_btn;
     private Button leaderboard_clear_btn;
     private MySharedPreferences sharedPreferences;
-    private Fragment leaderboard_fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,11 +29,11 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         leaderboard_clear_btn.setOnClickListener(v->clearLeaderboard());
         leaderboard_home_btn.setOnClickListener(v->switchToHomeView());
-        leaderboard_fragment = new RecyclerviewFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.frame1,leaderboard_fragment).commit();
+        Fragment leaderboard_fragment = new RecyclerviewFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.frame1, leaderboard_fragment).commit();
 
-//        Fragment map_fragment = new MapFragment();
-//        getSupportFragmentManager().beginTransaction().add(R.id.frame2,map_fragment).commit();
+        Fragment map_fragment = new MapsFragment();
+        getSupportFragmentManager().beginTransaction().add(R.id.frame2,map_fragment).commit();
 
     }
 

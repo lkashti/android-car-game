@@ -1,6 +1,6 @@
 package com.example.cargame.Adapters;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cargame.Models.Player;
 import com.example.cargame.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerViewHolder> {
-    private ArrayList<Player> playerList;
+    private final ArrayList<Player> playerList;
+    private final OnItemClickListener listener;
 
-    public PlayerAdapter(ArrayList<Player> player_list) {
+    public interface OnItemClickListener {
+        void onItemClick(Player item);
+    }
+    public PlayerAdapter(ArrayList<Player> player_list, OnItemClickListener listener) {
         this.playerList = player_list;
+        this.listener = listener;
+    }
+
+    public PlayerAdapter(ArrayList<Player> playerList) {
+        this.playerList = playerList;
+        this.listener = null;
     }
 
     @NonNull
@@ -32,6 +40,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
     @Override
     public void onBindViewHolder(@NonNull PlayerViewHolder holder, int position) {
+        holder.bind(playerList.get(position), listener);
         Player currentPlayer = playerList.get(position);
         holder.nameTextView.setText(currentPlayer.getName());
         holder.scoreTextView.setText(String.valueOf(currentPlayer.getHighScore()));
@@ -50,6 +59,9 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
             super(itemView);
             nameTextView = itemView.findViewById(R.id.recycleritem_player_name);
             scoreTextView = itemView.findViewById(R.id.recycleritem_player_score);
+        }
+        public void bind(final Player item, final OnItemClickListener listener) {
+            itemView.setOnClickListener(v -> listener.onItemClick(item));
         }
     }
 }

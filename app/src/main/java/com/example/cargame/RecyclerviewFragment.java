@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.cargame.Adapters.PlayerAdapter;
 import com.example.cargame.Models.Player;
@@ -38,6 +39,13 @@ public class RecyclerviewFragment extends Fragment {
         PlayerAdapter playerAdapter = new PlayerAdapter(playerList);
         Collections.sort(playerList);
         leaderboardList.setAdapter(playerAdapter);
+        leaderboardList.setAdapter(new PlayerAdapter(playerList,
+                new PlayerAdapter.OnItemClickListener() {
+                    public void onItemClick(Player item) {
+                        Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_LONG).show();
+
+                    }
+                }));
 
         return view;
     }
@@ -47,14 +55,15 @@ public class RecyclerviewFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext());
         leaderboardList.setLayoutManager(layoutManager);
     }
+
     private void loadPlayers() {
         playerList = new ArrayList<Player>();
         Gson gson = new Gson();
-        String playersJsonString = sharedPreferences.getString("players",null);
-        if (playersJsonString!=null)
-        {
-            Type type = new TypeToken<ArrayList<Player>>() {}.getType();
-            playerList = gson.fromJson(playersJsonString,type);
+        String playersJsonString = sharedPreferences.getString("players", null);
+        if (playersJsonString != null) {
+            Type type = new TypeToken<ArrayList<Player>>() {
+            }.getType();
+            playerList = gson.fromJson(playersJsonString, type);
         }
     }
 }
