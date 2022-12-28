@@ -1,5 +1,6 @@
 package com.example.cargame.Adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
     public void onBindViewHolder(@NonNull PlayerViewHolder holder, int position) {
         Player currentPlayer = playerList.get(position);
         holder.nameTextView.setText(currentPlayer.getName());
-        holder.scoreTextView.setText(currentPlayer.getHighScore());
+        holder.scoreTextView.setText(String.valueOf(currentPlayer.getHighScore()));
     }
 
     @Override

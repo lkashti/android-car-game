@@ -3,6 +3,7 @@ package com.example.cargame;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -19,6 +20,12 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import com.example.cargame.Models.Player;
+import com.example.cargame.Utils.MySharedPreferences;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -101,13 +108,16 @@ public class MainActivity extends AppCompatActivity {
     private Sensor sensor;
     private SensorEventListener accSensorEventListener;
     private Vibrator v;
+    private ArrayList<Player> players;
+    private MySharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Objects.requireNonNull(getSupportActionBar()).hide();
-
+        MySharedPreferences.init(this);
         //game setup
         initGameViews();
         prepareGameLogic();
@@ -130,7 +140,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        finish();
+        b1Timer.cancel();
+        b2Timer.cancel();
+        b3Timer.cancel();
+        b4Timer.cancel();
     }
 
     private void startGame() {
@@ -233,7 +246,9 @@ public class MainActivity extends AppCompatActivity {
             livesLeft--;
             hearts.get(livesLeft).setVisibility(View.INVISIBLE);
             if (livesLeft == 0) {
-                startGame();
+                savePlayerScore();
+                switchToLeaderboardView();
+                finish();
             }
             Log.i("INFO", "livesLeft = " + livesLeft);
         }
@@ -262,7 +277,9 @@ public class MainActivity extends AppCompatActivity {
             livesLeft--;
             hearts.get(livesLeft).setVisibility(View.INVISIBLE);
             if (livesLeft == 0) {
-                startGame();
+                savePlayerScore();
+                switchToLeaderboardView();
+                finish();
             }
             Log.i("INFO", "livesLeft = " + livesLeft);
         }
@@ -291,7 +308,9 @@ public class MainActivity extends AppCompatActivity {
             livesLeft--;
             hearts.get(livesLeft).setVisibility(View.INVISIBLE);
             if (livesLeft == 0) {
-                startGame();
+                savePlayerScore();
+                switchToLeaderboardView();
+                finish();
             }
             Log.i("INFO", "livesLeft = " + livesLeft);
         }
@@ -320,7 +339,9 @@ public class MainActivity extends AppCompatActivity {
             livesLeft--;
             hearts.get(livesLeft).setVisibility(View.INVISIBLE);
             if (livesLeft == 0) {
-                startGame();
+                savePlayerScore();
+                switchToLeaderboardView();
+                finish();
             }
             Log.i("INFO", "livesLeft = " + livesLeft);
         }
@@ -589,5 +610,25 @@ public class MainActivity extends AppCompatActivity {
         hearts.add(right_heart);
         hearts.add(center_heart);
         hearts.add(left_heart);
+    }
+
+    private void switchToLeaderboardView() {
+        Intent switch_intent = new Intent(this, LeaderboardActivity.class);
+        startActivity(switch_intent);
+        finish();
+    }
+
+    private void savePlayerScore() {
+        sharedPreferences = MySharedPreferences.getInstance();
+        Gson gson = new Gson();
+        ArrayList<Player> playerList;
+        String playersJsonString = sharedPreferences.getString("players", null);
+        Type type = new TypeToken<ArrayList<Player>>() {
+        }.getType();
+        playerList = gson.fromJson(playersJsonString, type);
+        playerList.get(playerList.size() - 1).setHighScore(
+                Integer.parseInt(scoreView.getText().toString()
+                ));
+        sharedPreferences.putString("players", gson.toJson(playerList));
     }
 }

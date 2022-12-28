@@ -16,6 +16,18 @@
         android:textSize="80sp"
         android:textStyle="italic" />
 
+    <EditText
+        android:id="@+id/input_player_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.005"
+        android:ems="10"
+        android:layout_gravity="center"
+        android:inputType="textPersonName"
+        android:hint="Enter your name"
+        tools:ignore="HardcodedText"
+        />
+
     <TextView
         android:id="@+id/choose_mode"
         android:layout_width="wrap_content"

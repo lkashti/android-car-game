@@ -42,4 +42,7 @@ public class MySharedPreferences {
     public String getString(String key, String defValue) {
         return preferences.getString(key, defValue);
     }
+    public void clear() {
+        instance.preferences.edit().clear().apply();
+    }
 }

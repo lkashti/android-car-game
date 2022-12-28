@@ -14,8 +14,8 @@
     <string name="buttons_slow">2 Buttons - Slow</string>
     <string name="leaderboard_btn_txt">Leaderboard</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="recycleritem_player_name">Name</string>
-    <string name="recycleritem_player_datetime">DateTime</string>
     <string name="recycleritem_player_score">Score</string>
+    <string name="clear_leaderboard_btn_text">Clear LeaderBoard</string>
+    <string name="leaderboard_home_btn_text">Home</string>
 </resources>

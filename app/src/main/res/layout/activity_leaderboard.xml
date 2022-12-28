@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:weightSum="2"
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".LeaderboardActivity">
@@ -24,5 +25,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/leaderboard_clear_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/clear_leaderboard_btn_text" />
+
+    <Button
+        android:id="@+id/leaderboard_home_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/leaderboard_home_btn_text" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
